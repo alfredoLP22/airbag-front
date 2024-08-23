@@ -9,7 +9,10 @@ interface UserStore {
 
 const useUserStore = create<UserStore>((set) => ({
   user: null,
-  setUser: (user) => set({ user }),
+  setUser: (user) => { 
+    console.log(user)
+    set({ user }) 
+  },
   clearUser: () => set({ user: null }),
 }));
 

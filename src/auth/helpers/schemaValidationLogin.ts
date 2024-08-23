@@ -2,10 +2,9 @@ import * as yup from "yup";
 
 export const schemaValidationLogin = yup
   .object({
-    email: yup
+    username: yup
       .string()
-      .required("El correo es un valor requerido")
-      .email("No es un correo valido")
+      .required("El username es un valor requerido")
       .trim(),
     password: yup
       .string()

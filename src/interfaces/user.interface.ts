@@ -8,6 +8,14 @@ export interface User {
   token?: string;
 }
 export type InputLogin = {
+  username: string;
+  password: string;
+};
+
+export interface InputRegister {
+  username: string;
   email: string;
+  firstName: string;
+  lastName: string;
   password: string;
 }
