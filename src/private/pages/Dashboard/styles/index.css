@@ -1,0 +1,7 @@
+.ant-pagination .ant-pagination-item-active {
+    background-color: #bbd4c9;
+    border-color: #00492c;
+}
+.ant-pagination .ant-pagination-item-active a {
+    color: #00492c;
+}
