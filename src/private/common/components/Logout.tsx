@@ -1,12 +1,18 @@
 import { Avatar } from "antd";
 import { useNavigate } from "react-router-dom";
+import useUserStore from "../../../store/useUserStore";
 
 const Logout = () => {
   const navigate = useNavigate();
+  const clearUser = useUserStore((state) => state.clearUser);
+
 
   const logOut = () => {
+    clearUser();
+    localStorage.removeItem("token");
     navigate('/');
   };
+  
   return (
     <div className="flex flex-col justify-center items-center px-7 gap-2 dark:bg-rock-blue-950">
       <Avatar className="bg-cod-gray-800 text-concrete-50 w-20 h-20 ring-2 ring-cod-gray-950">

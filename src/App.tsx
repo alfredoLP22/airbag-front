@@ -3,6 +3,7 @@ import Login from "./auth/page/Login";
 import RoutePublic from "./private/layout/RoutePublic";
 import RouteProtected from "./private/layout/RouteProtected";
 import Dashboard from "./private/pages/Dashboard/page/Dashboard";
+import Register from "./auth/page/Register";
 
 function App() {
   return (
@@ -10,7 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<RoutePublic />}>
           <Route index element={<Login />} />
-          {/* <Route path="crear-cuenta" element={} /> */}
+          <Route path="crear-cuenta" element={<Register />} />
         </Route>
 
         <Route path="/admin" element={<RouteProtected />}>
