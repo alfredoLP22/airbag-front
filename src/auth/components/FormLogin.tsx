@@ -36,7 +36,7 @@ const FormLogin: React.FC = () => {
 
         setTimeout(() => {
           navigate("/admin");
-        }, 3000);
+        }, 1000);
       } else {
         throw new Error("Invalid login response");
       }
@@ -89,7 +89,7 @@ const FormLogin: React.FC = () => {
         </div>
         <div className="flex flex-col w-4/6">
           <label htmlFor="password" className="p-1 dark:text-concrete-100">
-            Contraseña
+            Password
           </label>
           <input
             type={isVisible ? "text" : "password"}
@@ -116,9 +116,11 @@ const FormLogin: React.FC = () => {
               />
               <span className="slider"></span>
             </label>
-            <span className="dark:text-concrete-100">Mostrar contraseña</span>
+            <span className="dark:text-concrete-100">Show password</span>
           </div>
-          <Link to={'crear-cuenta'} className="hover:underline text-gold-500">Crear una cuenta</Link>
+          <Link to={"crear-cuenta"} className="hover:underline text-gold-500">
+            Create account
+          </Link>
         </div>
 
         <button
@@ -126,7 +128,7 @@ const FormLogin: React.FC = () => {
           disabled={!isValid || isSubmitting}
           className="mt-4 p-2 w-4/6  bg-cod-gray-950 hover:bg-cod-gray-900 rounded-sm text-concrete-50 flex items-center justify-center gap-1 disabled:bg-cod-gray-800 cursor-pointer"
         >
-          Iniciar sesion
+          {isSubmitting ? "Please wait..." : "Login"}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
