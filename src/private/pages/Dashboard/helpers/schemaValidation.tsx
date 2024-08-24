@@ -18,7 +18,7 @@ export const schemaVehicle = yup
       .string()
       .required("La marca del vehículo es un valor requerido")
       .trim()
-      .min(6, "La marca del vehículo debe tener al menos 6 caracteres")
+      .min(2, "La marca del vehículo debe tener al menos 2 caracteres")
       .max(50, "La marca del vehículo no puede tener más de 50 caracteres"),
     price: yup
       .number()

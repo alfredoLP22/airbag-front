@@ -65,7 +65,7 @@ const Sidebar = () => {
       <div className="flex flex-col">
         {!close && (
           <p className="p-2 font-bold text-xl text-cod-gray-950">
-            Administracion
+            Administration
           </p>
         )}
         <NavLink
@@ -86,7 +86,7 @@ const Sidebar = () => {
               d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 0 1 0 3.75H5.625a1.875 1.875 0 0 1 0-3.75Z"
             />
           </svg>
-          {!close && <span>Vehiculos</span>}
+          {!close && <span>Vehicles</span>}
         </NavLink>
       </div>
     </aside>

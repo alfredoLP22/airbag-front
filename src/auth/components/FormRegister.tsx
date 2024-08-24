@@ -62,7 +62,7 @@ const FormRegister: React.FC = () => {
         </div>
         <div className="flex flex-col w-4/6">
           <label htmlFor="username" className="p-1 dark:text-concrete-100">
-            Nombre de usuario
+            Username
           </label>
           <input
             type="text"
@@ -81,7 +81,7 @@ const FormRegister: React.FC = () => {
         </div>
         <div className="flex flex-col w-4/6">
           <label htmlFor="email" className="p-1 dark:text-concrete-100">
-            Correo electrónico
+            Email
           </label>
           <input
             type="text"
@@ -100,7 +100,7 @@ const FormRegister: React.FC = () => {
         </div>
         <div className="flex flex-col w-4/6">
           <label htmlFor="firstName" className="p-1 dark:text-concrete-100">
-            Nombre
+            First name
           </label>
           <input
             type="text"
@@ -121,7 +121,7 @@ const FormRegister: React.FC = () => {
         </div>
         <div className="flex flex-col w-4/6">
           <label htmlFor="lastName" className="p-1 dark:text-concrete-100">
-            Apellido
+            Last name
           </label>
           <input
             type="text"
@@ -140,7 +140,7 @@ const FormRegister: React.FC = () => {
         </div>
         <div className="flex flex-col w-4/6">
           <label htmlFor="password" className="p-1 dark:text-concrete-100">
-            Contraseña
+            Password
           </label>
           <input
             type={isVisible ? "text" : "password"}
@@ -167,7 +167,7 @@ const FormRegister: React.FC = () => {
               />
               <span className="slider"></span>
             </label>
-            <span className="dark:text-concrete-100">Mostrar contraseña</span>
+            <span className="dark:text-concrete-100">Show password</span>
           </div>
         </div>
 
@@ -176,7 +176,7 @@ const FormRegister: React.FC = () => {
           disabled={!isValid || isSubmitting}
           className="mt-4 p-2 w-4/6 bg-cod-gray-950 hover:bg-cod-gray-900 rounded-sm text-concrete-50 flex items-center justify-center gap-1 disabled:bg-cod-gray-800 cursor-pointer"
         >
-          {isSubmitting ? "Creando cuenta..." : "Crear cuenta"}
+          {isSubmitting ? "Creating account..." : "Create account"}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
