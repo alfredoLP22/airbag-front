@@ -23,7 +23,12 @@ const Dashboard: React.FC = () => {
   const deleteVehicle = useVehicleStore((state) => state.deleteVehicle);
 
   useEffect(() => {
-    fetchVehicles(page, 5);
+    const token = localStorage.getItem("token");
+    if (token) {
+      fetchVehicles(page, 5);
+    } else {
+      console.error("Token is not available.");
+    }
   }, [fetchVehicles, page]);
 
   const openCreateVehicle = () => {

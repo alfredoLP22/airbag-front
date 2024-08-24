@@ -4,6 +4,7 @@ import { ErrorResponse } from "../../interfaces/response.interface";
 import { InputsVehicle } from "../../private/pages/Dashboard/interfaces/vehicle";
 
 const token = localStorage.getItem("token");
+
 export const createVehicle = async (vehicle: InputsVehicle) => {
   try {
     const response = await api.post("/vehicle", vehicle, {
