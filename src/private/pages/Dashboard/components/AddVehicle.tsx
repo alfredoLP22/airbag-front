@@ -1,25 +1,75 @@
-import React, { MouseEventHandler } from "react";
+import React, { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { InputsVehicle } from "../interfaces/vehicle";
 import { schemaVehicle } from "../helpers/schemaValidation";
 import TitleSection from "../../../common/components/TitleSection";
+import useVehicleStore from "../../../../store/useVehicleStore";
+import { createVehicle } from "../../../../services/vehicles/vehicleService";
+import toast, { Toaster } from "react-hot-toast";
 
-const AddVehicle: React.FC<{ close: MouseEventHandler; isOpen: boolean }> = ({
-  close,
-  isOpen,
-}) => {
+const AddVehicle: React.FC<{
+  close: () => void;
+  isOpen: boolean;
+  vehicle: InputsVehicle | null;
+}> = ({ close, isOpen, vehicle }) => {
   const {
     register,
     handleSubmit,
+    reset,
+    setValue,
     formState: { errors, isSubmitting, isValid },
   } = useForm<InputsVehicle>({
     resolver: yupResolver(schemaVehicle),
     mode: "onBlur",
   });
 
-  const onSubmit: SubmitHandler<InputsVehicle> = (data) => {
-    console.log(data);
+  const addVehicle = useVehicleStore((state) => state.addVehicle);
+  const updateVehicleInStore = useVehicleStore((state) => state.updateVehicle);
+
+  useEffect(() => {
+    if (vehicle) {
+      Object.keys(vehicle).forEach((key) => {
+        setValue(
+          key as keyof InputsVehicle,
+          vehicle[key as keyof InputsVehicle] || ""
+        );
+      });
+    } else {
+      reset();
+    }
+  }, [vehicle, setValue, reset]);
+
+  const onSubmit: SubmitHandler<InputsVehicle> = async (data) => {
+    try {
+      if (vehicle?._id) {
+        await updateVehicleInStore(vehicle._id, data);
+        toast.success("The vehicle was updated successfully");
+      } else {
+        const response = await createVehicle(data);
+        if (response.data) {
+          addVehicle(response.data);
+          toast.success("The vehicle was created successfully");
+        }
+      }
+      reset();
+      setTimeout(() => {
+        close();
+      }, 3000);
+    } catch (error: unknown) {
+      let errorMessage = "An unknown error occurred";
+
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      } else if (typeof error === "string") {
+        errorMessage = error;
+      } else {
+        console.error("Error type not recognized:", error);
+      }
+
+      toast.error(errorMessage);
+      console.error(errorMessage);
+    }
   };
 
   return (
@@ -55,20 +105,18 @@ const AddVehicle: React.FC<{ close: MouseEventHandler; isOpen: boolean }> = ({
             />
           </svg>
         </button>
+        <Toaster />
         <form
           className="w-9/12 mx-auto mt-5 py-4 px-2 overflow-x-hidden"
           onSubmit={handleSubmit(onSubmit)}
         >
           <div className="flex items-center gap-2">
-            <TitleSection title="Agregar vehiculo"/>
+            <TitleSection title={vehicle?._id ? "Save vehicle" : "Add vehicle"} />
           </div>
           <div className="flex flex-col gap-7">
             <div className="flex flex-col">
-              <label
-                htmlFor="vehicleName"
-                className="p-1"
-              >
-                Nombre del Vehículo{" "}
+              <label htmlFor="vehicleName" className="p-1">
+                Name of vehicle{" "}
                 <span className="text-roman-500 text-lg">*</span>
               </label>
               <input
@@ -90,11 +138,8 @@ const AddVehicle: React.FC<{ close: MouseEventHandler; isOpen: boolean }> = ({
             </div>
 
             <div className="flex flex-col">
-              <label
-                htmlFor="plate"
-                className="p-1"
-              >
-                Placa <span className="text-roman-500 text-lg">*</span>
+              <label htmlFor="plate" className="p-1">
+                Plate <span className="text-roman-500 text-lg">*</span>
               </label>
               <input
                 type="text"
@@ -102,9 +147,7 @@ const AddVehicle: React.FC<{ close: MouseEventHandler; isOpen: boolean }> = ({
                 placeholder="ABC123"
                 {...register("plate")}
                 className={`w-full p-2 outline-gray-300 rounded-sm outline-none focus:outline-cod-gray-700 border ${
-                  errors.plate
-                    ? "border-roman-500"
-                    : "border-cod-gray-400"
+                  errors.plate ? "border-roman-500" : "border-cod-gray-400"
                 }`}
               />
               {errors.plate && (
@@ -115,11 +158,8 @@ const AddVehicle: React.FC<{ close: MouseEventHandler; isOpen: boolean }> = ({
             </div>
 
             <div className="flex flex-col">
-              <label
-                htmlFor="brand"
-                className="p-1"
-              >
-                Marca <span className="text-roman-500 text-lg">*</span>
+              <label htmlFor="brand" className="p-1">
+                Brand <span className="text-roman-500 text-lg">*</span>
               </label>
               <input
                 type="text"
@@ -127,9 +167,7 @@ const AddVehicle: React.FC<{ close: MouseEventHandler; isOpen: boolean }> = ({
                 placeholder="Toyota"
                 {...register("brand")}
                 className={`w-full p-2 outline-gray-300 rounded-sm outline-none focus:outline-cod-gray-700 border ${
-                  errors.brand
-                    ? "border-roman-500"
-                    : "border-cod-gray-400"
+                  errors.brand ? "border-roman-500" : "border-cod-gray-400"
                 }`}
               />
               {errors.brand && (
@@ -140,11 +178,8 @@ const AddVehicle: React.FC<{ close: MouseEventHandler; isOpen: boolean }> = ({
             </div>
 
             <div className="flex flex-col">
-              <label
-                htmlFor="price"
-                className="p-1"
-              >
-                Precio <span className="text-roman-500 text-lg">*</span>
+              <label htmlFor="price" className="p-1">
+                Price <span className="text-roman-500 text-lg">*</span>
               </label>
               <input
                 type="number"
@@ -152,9 +187,7 @@ const AddVehicle: React.FC<{ close: MouseEventHandler; isOpen: boolean }> = ({
                 placeholder="25000"
                 {...register("price")}
                 className={`w-full p-2 outline-gray-300 rounded-sm outline-none focus:outline-cod-gray-700 border ${
-                  errors.price
-                    ? "border-roman-500"
-                    : "border-cod-gray-400"
+                  errors.price ? "border-roman-500" : "border-cod-gray-400"
                 }`}
               />
               {errors.price && (
@@ -165,11 +198,8 @@ const AddVehicle: React.FC<{ close: MouseEventHandler; isOpen: boolean }> = ({
             </div>
 
             <div className="flex flex-col">
-              <label
-                htmlFor="description"
-                className="p-1"
-              >
-                Descripción
+              <label htmlFor="description" className="p-1">
+                Description
               </label>
               <textarea
                 id="description"
@@ -193,7 +223,7 @@ const AddVehicle: React.FC<{ close: MouseEventHandler; isOpen: boolean }> = ({
             disabled={!isValid || isSubmitting}
             className="mt-4 mx-auto p-2 w-4/6 bg-cod-gray-950 hover:bg-cod-gray-900 rounded-sm text-concrete-100 flex items-center justify-center gap-1 disabled:opacity-50 disabled:hover:bg-cod-gray-800 cursor-pointer"
           >
-            Añadir Vehículo
+            {vehicle?._id ? "Save vehicle" : "Add vehicle"}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

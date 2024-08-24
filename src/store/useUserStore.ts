@@ -8,8 +8,10 @@ interface UserStore {
 }
 
 const useUserStore = create<UserStore>((set) => ({
-  user: null,
-  setUser: (user) => set({ user }),
+  user: JSON.parse(localStorage.getItem("user") || "null"),
+  setUser: (user) => { 
+    set({ user }) 
+  },
   clearUser: () => set({ user: null }),
 }));
 

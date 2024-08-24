@@ -1,42 +1,34 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { schemaValidationLogin } from "../helpers/schemaValidationLogin";
-import { InputLogin } from "../../interfaces/user.interface";
+import { useNavigate } from "react-router-dom";
+import { InputRegister } from "../../interfaces/user.interface";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Logo from "../../assets/logo-airbag.png";
-import { login } from "../../services/auth/authService";
 import toast, { Toaster } from "react-hot-toast";
-import useUserStore from "../../store/useUserStore";
+import { schemaValidationRegister } from "../helpers/schemaValidationRegister";
+import { registerUser } from "../../services/auth/authService";
 
-const FormLogin: React.FC = () => {
+const FormRegister: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate();
-  const setUser = useUserStore((state) => state.setUser);
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting, isValid },
-  } = useForm<InputLogin>({
-    resolver: yupResolver(schemaValidationLogin),
+  } = useForm<InputRegister>({
+    resolver: yupResolver(schemaValidationRegister),
     mode: "onBlur",
   });
 
-  const onSubmit: SubmitHandler<InputLogin> = async (data) => {
+  const onSubmit: SubmitHandler<InputRegister> = async (data) => {
     try {
-      const response = await login(data);
-      if (response.data && response.data.user && response.data.token) {
-        setUser({
-          ...response.data.user,
-          token: response.data.token,
-        });
-
-        toast.success("Login successfully");
-
+      const response = await registerUser(data);
+      if (response.data !== null) {
+        toast.success("User was created successfully");
         setTimeout(() => {
-          navigate("/admin");
-        }, 1000);
+          navigate("/");
+        }, 3000);
       } else {
         throw new Error("Invalid login response");
       }
@@ -88,6 +80,65 @@ const FormLogin: React.FC = () => {
           )}
         </div>
         <div className="flex flex-col w-4/6">
+          <label htmlFor="email" className="p-1 dark:text-concrete-100">
+            Email
+          </label>
+          <input
+            type="text"
+            placeholder="Ej: correo@correo.com"
+            id="email"
+            {...register("email")}
+            className={`w-100 p-2 outline-gray-300 rounded-sm outline-none focus:outline-cod-gray-700 border ${
+              errors.email ? "border-roman-500" : "border-viridian-green-200"
+            }`}
+          />
+          {errors.email && (
+            <div className="text-roman-500 text-sm">
+              {errors?.email.message}
+            </div>
+          )}
+        </div>
+        <div className="flex flex-col w-4/6">
+          <label htmlFor="firstName" className="p-1 dark:text-concrete-100">
+            First name
+          </label>
+          <input
+            type="text"
+            placeholder="Ej: Alfredo"
+            id="firstName"
+            {...register("firstName")}
+            className={`w-100 p-2 outline-gray-300 rounded-sm outline-none focus:outline-cod-gray-700 border ${
+              errors.firstName
+                ? "border-roman-500"
+                : "border-viridian-green-200"
+            }`}
+          />
+          {errors.firstName && (
+            <div className="text-roman-500 text-sm">
+              {errors?.firstName.message}
+            </div>
+          )}
+        </div>
+        <div className="flex flex-col w-4/6">
+          <label htmlFor="lastName" className="p-1 dark:text-concrete-100">
+            Last name
+          </label>
+          <input
+            type="text"
+            placeholder="Ej: Lozano"
+            id="lastName"
+            {...register("lastName")}
+            className={`w-100 p-2 outline-gray-300 rounded-sm outline-none focus:outline-cod-gray-700 border ${
+              errors.lastName ? "border-roman-500" : "border-viridian-green-200"
+            }`}
+          />
+          {errors.lastName && (
+            <div className="text-roman-500 text-sm">
+              {errors?.lastName.message}
+            </div>
+          )}
+        </div>
+        <div className="flex flex-col w-4/6">
           <label htmlFor="password" className="p-1 dark:text-concrete-100">
             Password
           </label>
@@ -97,7 +148,7 @@ const FormLogin: React.FC = () => {
             id="password"
             {...register("password")}
             className={`w-100 p-2 outline-gray-300 rounded-sm outline-none focus:outline-cod-gray-700 border ${
-              errors.username ? "border-roman-500" : "border-viridian-green-200"
+              errors.password ? "border-roman-500" : "border-viridian-green-200"
             }`}
           />
           {errors.password && (
@@ -118,17 +169,14 @@ const FormLogin: React.FC = () => {
             </label>
             <span className="dark:text-concrete-100">Show password</span>
           </div>
-          <Link to={"crear-cuenta"} className="hover:underline text-gold-500">
-            Create account
-          </Link>
         </div>
 
         <button
           type="submit"
           disabled={!isValid || isSubmitting}
-          className="mt-4 p-2 w-4/6  bg-cod-gray-950 hover:bg-cod-gray-900 rounded-sm text-concrete-50 flex items-center justify-center gap-1 disabled:bg-cod-gray-800 cursor-pointer"
+          className="mt-4 p-2 w-4/6 bg-cod-gray-950 hover:bg-cod-gray-900 rounded-sm text-concrete-50 flex items-center justify-center gap-1 disabled:bg-cod-gray-800 cursor-pointer"
         >
-          {isSubmitting ? "Please wait..." : "Login"}
+          {isSubmitting ? "Creating account..." : "Create account"}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -149,4 +197,4 @@ const FormLogin: React.FC = () => {
   );
 };
 
-export default FormLogin;
+export default FormRegister;
