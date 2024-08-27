@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { InputsVehicle } from "../interfaces/vehicle";
 import { schemaVehicle } from "../helpers/schemaValidation";
@@ -7,6 +7,10 @@ import TitleSection from "../../../common/components/TitleSection";
 import useVehicleStore from "../../../../store/useVehicleStore";
 import { createVehicle } from "../../../../services/vehicles/vehicleService";
 import toast, { Toaster } from "react-hot-toast";
+import Select from "../../../../components/Select";
+import { brands } from "../../../../services/vehicles/data";
+import Label from "../../../../components/Label";
+import Input from "../../../../components/Input";
 
 const AddVehicle: React.FC<{
   close: () => void;
@@ -14,8 +18,10 @@ const AddVehicle: React.FC<{
   vehicle: InputsVehicle | null;
 }> = ({ close, isOpen, vehicle }) => {
   const {
+    control,
     register,
     handleSubmit,
+    watch,
     reset,
     setValue,
     formState: { errors, isSubmitting, isValid },
@@ -66,9 +72,7 @@ const AddVehicle: React.FC<{
       } else {
         console.error("Error type not recognized:", error);
       }
-
       toast.error(errorMessage);
-      console.error(errorMessage);
     }
   };
 
@@ -111,19 +115,24 @@ const AddVehicle: React.FC<{
           onSubmit={handleSubmit(onSubmit)}
         >
           <div className="flex items-center gap-2">
-            <TitleSection title={vehicle?._id ? "Save vehicle" : "Add vehicle"} />
+            <TitleSection
+              title={vehicle?._id ? "Save vehicle" : "Add vehicle"}
+            />
           </div>
           <div className="flex flex-col gap-7">
             <div className="flex flex-col">
-              <label htmlFor="vehicleName" className="p-1">
-                Name of vehicle{" "}
-                <span className="text-roman-500 text-lg">*</span>
-              </label>
-              <input
+              <Label
+                htmlFor="vehicleName"
+                text="Name of vehicle"
+                isRequired={true}
+              />
+              <Input
                 type="text"
                 id="vehicleName"
                 placeholder="Toyota Corolla"
                 {...register("vehicleName")}
+                value={watch("vehicleName") || ""}
+                onChange={(e) => setValue("vehicleName", e.target.value)}
                 className={`w-full p-2 outline-gray-300 rounded-sm outline-none focus:outline-cod-gray-700 border ${
                   errors.vehicleName
                     ? "border-roman-500"
@@ -138,14 +147,14 @@ const AddVehicle: React.FC<{
             </div>
 
             <div className="flex flex-col">
-              <label htmlFor="plate" className="p-1">
-                Plate <span className="text-roman-500 text-lg">*</span>
-              </label>
-              <input
+              <Label htmlFor="plate" text="Plate" isRequired={true} />
+              <Input
                 type="text"
                 id="plate"
                 placeholder="ABC123"
                 {...register("plate")}
+                value={watch("plate") || ""}
+                onChange={(e) => setValue("plate", e.target.value)}
                 className={`w-full p-2 outline-gray-300 rounded-sm outline-none focus:outline-cod-gray-700 border ${
                   errors.plate ? "border-roman-500" : "border-cod-gray-400"
                 }`}
@@ -158,17 +167,20 @@ const AddVehicle: React.FC<{
             </div>
 
             <div className="flex flex-col">
-              <label htmlFor="brand" className="p-1">
-                Brand <span className="text-roman-500 text-lg">*</span>
-              </label>
-              <input
-                type="text"
-                id="brand"
-                placeholder="Toyota"
-                {...register("brand")}
-                className={`w-full p-2 outline-gray-300 rounded-sm outline-none focus:outline-cod-gray-700 border ${
-                  errors.brand ? "border-roman-500" : "border-cod-gray-400"
-                }`}
+              <Label text="Brand" htmlFor="brand" isRequired={true} />
+              <Controller
+                control={control}
+                name="brand"
+                render={({ field }) => (
+                  <Select<InputsVehicle>
+                    value={field.value}
+                    onChange={(e) => field.onChange(e.target.value)}
+                    options={brands}
+                    className={`w-full p-2 outline-gray-300 rounded-sm outline-none focus:outline-cod-gray-700 border ${
+                      errors.brand ? "border-roman-500" : "border-cod-gray-400"
+                    }`}
+                  />
+                )}
               />
               {errors.brand && (
                 <div className="text-roman-500 text-sm">
@@ -178,16 +190,16 @@ const AddVehicle: React.FC<{
             </div>
 
             <div className="flex flex-col">
-              <label htmlFor="price" className="p-1">
-                Price <span className="text-roman-500 text-lg">*</span>
-              </label>
-              <input
+              <Label text="Price" htmlFor="price" isRequired={true} />
+              <Input
                 type="number"
                 id="price"
                 placeholder="25000"
                 {...register("price")}
+                value={watch("price") || ""}
+                onChange={(e) => setValue("price", Number(e.target.value))}
                 className={`w-full p-2 outline-gray-300 rounded-sm outline-none focus:outline-cod-gray-700 border ${
-                  errors.price ? "border-roman-500" : "border-cod-gray-400"
+                  errors.plate ? "border-roman-500" : "border-cod-gray-400"
                 }`}
               />
               {errors.price && (
@@ -198,9 +210,11 @@ const AddVehicle: React.FC<{
             </div>
 
             <div className="flex flex-col">
-              <label htmlFor="description" className="p-1">
-                Description
-              </label>
+              <Label
+                htmlFor="description"
+                isRequired={false}
+                text="Description"
+              />
               <textarea
                 id="description"
                 placeholder="Descripción opcional"

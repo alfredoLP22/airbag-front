@@ -4,29 +4,29 @@ export const schemaVehicle = yup
   .object({
     vehicleName: yup
       .string()
-      .required("El nombre del vehículo es un valor requerido")
+      .required("The vehicle name is a required field")
       .trim()
-      .min(3, "El nombre del vehículo debe tener al menos 3 caracteres")
-      .max(50, "El nombre del vehículo no puede tener más de 50 caracteres"),
+      .min(3, "The vehicle name must be at least 3 characters")
+      .max(50, "The vehicle name cannot be more than 50 characters"),
     plate: yup
       .string()
-      .required("La placa del vehículo es un valor requerido")
+      .required("The vehicle plate is a required field")
       .trim()
-      .min(3, "La placa del vehículo debe tener al menos 3 caracteres")
-      .max(7, "La placa del vehículo no puede tener más de 7 caracteres"),
+      .min(3, "The vehicle plate must be at least 3 characters")
+      .max(7, "The vehicle plate cannot be more than 7 characters"),
     brand: yup
       .string()
-      .required("La marca del vehículo es un valor requerido")
+      .required("The vehicle brand is a required field")
       .trim()
-      .min(2, "La marca del vehículo debe tener al menos 2 caracteres")
-      .max(50, "La marca del vehículo no puede tener más de 50 caracteres"),
+      .min(2, "The vehicle brand must be at least 2 characters")
+      .max(50, "The vehicle brand cannot be more than 50 characters"),
     price: yup
       .number()
-      .required("El precio del vehículo es un valor requerido")
-      .typeError("El precio debe ser un número"),
+      .required("The vehicle price is a required field")
+      .typeError("The price must be a number"),
     description: yup
       .string()
-      .max(50, "La descripción no puede tener más de 50 caracteres")
+      .max(50, "The description cannot be more than 50 characters")
       .trim(),
   })
   .required();
