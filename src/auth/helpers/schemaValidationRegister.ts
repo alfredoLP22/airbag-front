@@ -1,15 +1,15 @@
 import * as yup from "yup";
 
 export const schemaValidationRegister = yup.object().shape({
-  username: yup.string().required("El nombre de usuario es obligatorio"),
+  username: yup.string().required("The username is required"),
   email: yup
     .string()
-    .email("El correo debe ser válido")
-    .required("El correo es obligatorio"),
-  firstName: yup.string().required("El nombre es obligatorio"),
-  lastName: yup.string().required("El apellido es obligatorio"),
+    .email("The email must be valid")
+    .required("The email is required"),
+  firstName: yup.string().required("The first name is required"),
+  lastName: yup.string().required("The last name is required"),
   password: yup
     .string()
-    .min(6, "La contraseña debe tener al menos 6 caracteres")
-    .required("La contraseña es obligatoria"),
+    .min(6, "The password must be at least 6 characters long")
+    .required("The password is required"),
 });
