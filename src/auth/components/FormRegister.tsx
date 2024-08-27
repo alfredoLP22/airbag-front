@@ -7,6 +7,8 @@ import Logo from "../../assets/logo-airbag.png";
 import toast, { Toaster } from "react-hot-toast";
 import { schemaValidationRegister } from "../helpers/schemaValidationRegister";
 import { registerUser } from "../../services/auth/authService";
+import Label from "../../components/Label";
+import Input from "../../components/Input";
 
 const FormRegister: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -61,10 +63,8 @@ const FormRegister: React.FC = () => {
           </figure>
         </div>
         <div className="flex flex-col w-4/6">
-          <label htmlFor="username" className="p-1 dark:text-concrete-100">
-            Username
-          </label>
-          <input
+          <Label htmlFor="username" text="Username" isRequired={true} />
+          <Input
             type="text"
             placeholder="Ej: username01"
             id="username"
@@ -80,11 +80,9 @@ const FormRegister: React.FC = () => {
           )}
         </div>
         <div className="flex flex-col w-4/6">
-          <label htmlFor="email" className="p-1 dark:text-concrete-100">
-            Email
-          </label>
-          <input
-            type="text"
+          <Label text="Email" htmlFor="email" isRequired={true} />
+          <Input
+            type="email"
             placeholder="Ej: correo@correo.com"
             id="email"
             {...register("email")}
@@ -99,18 +97,14 @@ const FormRegister: React.FC = () => {
           )}
         </div>
         <div className="flex flex-col w-4/6">
-          <label htmlFor="firstName" className="p-1 dark:text-concrete-100">
-            First name
-          </label>
-          <input
+          <Label text="First name" htmlFor="firstName" isRequired={true} />
+          <Input
             type="text"
-            placeholder="Ej: Alfredo"
+            placeholder="Ej: John"
             id="firstName"
             {...register("firstName")}
             className={`w-100 p-2 outline-gray-300 rounded-sm outline-none focus:outline-cod-gray-700 border ${
-              errors.firstName
-                ? "border-roman-500"
-                : "border-viridian-green-200"
+              errors.email ? "border-roman-500" : "border-viridian-green-200"
             }`}
           />
           {errors.firstName && (
@@ -120,16 +114,14 @@ const FormRegister: React.FC = () => {
           )}
         </div>
         <div className="flex flex-col w-4/6">
-          <label htmlFor="lastName" className="p-1 dark:text-concrete-100">
-            Last name
-          </label>
-          <input
+          <Label text="Last name" htmlFor="lastName" isRequired={true} />
+          <Input
             type="text"
-            placeholder="Ej: Lozano"
+            placeholder="Ej: Doe"
             id="lastName"
             {...register("lastName")}
             className={`w-100 p-2 outline-gray-300 rounded-sm outline-none focus:outline-cod-gray-700 border ${
-              errors.lastName ? "border-roman-500" : "border-viridian-green-200"
+              errors.email ? "border-roman-500" : "border-viridian-green-200"
             }`}
           />
           {errors.lastName && (
@@ -139,13 +131,11 @@ const FormRegister: React.FC = () => {
           )}
         </div>
         <div className="flex flex-col w-4/6">
-          <label htmlFor="password" className="p-1 dark:text-concrete-100">
-            Password
-          </label>
-          <input
+          <Label text="Password" htmlFor="password" isRequired={true} />
+          <Input
             type={isVisible ? "text" : "password"}
-            placeholder="********"
             id="password"
+            placeholder="***********"
             {...register("password")}
             className={`w-100 p-2 outline-gray-300 rounded-sm outline-none focus:outline-cod-gray-700 border ${
               errors.password ? "border-roman-500" : "border-viridian-green-200"

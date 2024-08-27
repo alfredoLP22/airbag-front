@@ -8,6 +8,8 @@ import Logo from "../../assets/logo-airbag.png";
 import { login } from "../../services/auth/authService";
 import toast, { Toaster } from "react-hot-toast";
 import useUserStore from "../../store/useUserStore";
+import Label from "../../components/Label";
+import Input from "../../components/Input";
 
 const FormLogin: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -69,10 +71,8 @@ const FormLogin: React.FC = () => {
           </figure>
         </div>
         <div className="flex flex-col w-4/6">
-          <label htmlFor="username" className="p-1 dark:text-concrete-100">
-            Username
-          </label>
-          <input
+          <Label htmlFor="username" text="Username" />
+          <Input
             type="text"
             placeholder="Ej: username01"
             id="username"
@@ -88,12 +88,10 @@ const FormLogin: React.FC = () => {
           )}
         </div>
         <div className="flex flex-col w-4/6">
-          <label htmlFor="password" className="p-1 dark:text-concrete-100">
-            Password
-          </label>
-          <input
+          <Label htmlFor="password" text="Password" />
+          <Input
             type={isVisible ? "text" : "password"}
-            placeholder="********"
+            placeholder="************"
             id="password"
             {...register("password")}
             className={`w-100 p-2 outline-gray-300 rounded-sm outline-none focus:outline-cod-gray-700 border ${
